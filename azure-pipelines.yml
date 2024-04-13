@@ -1,14 +1,13 @@
-# azure-pipelines.yml
-
 trigger:
   - main  # Trigger the pipeline when changes are pushed to the 'main' branch
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use an Ubuntu agent
+  name: Default  # Specify the name of your self-hosted agent pool
 
 variables:
-    JAVA_HOME: "/usr/lib/jvm/java-11-openjdk-amd64"
-    PATH: "/usr/lib/jvm/java-11-openjdk-amd64/bin:${PATH}"
+  JAVA_HOME: "/usr/lib/jvm/java-11-openjdk-amd64"
+  PATH: "/usr/lib/jvm/java-11-openjdk-amd64/bin:${PATH}"
+
 steps:
   - script: |
       java -version
@@ -22,5 +21,3 @@ steps:
   - script: |
       ./mvnw test  # Run tests (replace with appropriate command for your project)
     displayName: 'Run Tests'
-
-# Add additional steps for deploying or publishing artifacts as needed
