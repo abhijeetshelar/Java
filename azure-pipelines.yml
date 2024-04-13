@@ -1,4 +1,5 @@
 trigger:
+
   - main  # Trigger the pipeline when changes are pushed to the 'main' branch
 
 pool:
@@ -15,9 +16,9 @@ steps:
     displayName: 'Show Java and Maven Versions'
 
   - script: |
-      mvn.cmd clean package  # Use mvnw.cmd for Windows
+      mvn clean package  # Use mvnw.cmd for Windows
     displayName: 'Build'
 
   - script: |
-      mvn.cmd test  # Run tests (replace with appropriate command for your project)
+      mvn test  # Run tests (replace with appropriate command for your project)
     displayName: 'Run Tests'
