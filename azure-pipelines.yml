@@ -16,6 +16,7 @@ steps:
     displayName: 'Show Java and Maven Versions'
 
   - script: |
+      dir 
       mvn clean package  # Use mvnw.cmd for Windows
     displayName: 'Build'
 
