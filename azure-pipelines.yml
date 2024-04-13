@@ -16,10 +16,12 @@ steps:
     displayName: 'Show Java and Maven Versions'
 
   - script: |
-      dir 
-      mvn clean package  # Use mvnw.cmd for Windows
+     dir
+      mvn.cmd clean package  # Use mvn.cmd for Maven on Windows
     displayName: 'Build'
+    workingDirectory: $(Pipeline.Workspace)/path/to/your/maven/project  # Use absolute path
 
   - script: |
-      mvn test  # Run tests (replace with appropriate command for your project)
+      mvn.cmd test  # Run tests using mvn.cmd (replace with appropriate test command)
     displayName: 'Run Tests'
+    workingDirectory: $(Pipeline.Workspace)/path/to/your/maven/project  # Use absolute path'
