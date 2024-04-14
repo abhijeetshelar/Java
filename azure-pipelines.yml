@@ -7,8 +7,6 @@ trigger:
 
 pool:
   name: 'Default'  # Specify the name of your self-hosted agent pool
-  demands:
-    - agent.name -equals Default  # Specify the name of your self-hosted agent
 
 variables:
   mavenPOMFile: 'pom.xml'
@@ -23,13 +21,13 @@ steps:
   - task: CopyFiles@2
     displayName: 'Copy Files to Artifact Staging Directory'
     inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)/target'  # Source folder where Maven built the artifacts
+      SourceFolder: '$(System.DefaultWorkingDirectory)/target'  # Source folder where Maven built the artifacts
       Contents: '**/*.jar'  # Include all JAR files in the target folder
-      TargetFolder: '$(build.artifactstagingdirectory)'  # Copy JAR files to the artifact staging directory
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'  # Copy JAR files to the artifact staging directory
     condition: succeededOrFailed()  # Execute this step regardless of previous steps' result
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'  # Publish artifacts from the staging directory
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Publish artifacts from the staging directory
     condition: succeededOrFailed()  # Publish artifacts regardless of previous steps' result
