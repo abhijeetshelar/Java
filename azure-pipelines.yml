@@ -6,30 +6,28 @@ trigger:
       - main  # Trigger the pipeline when changes are pushed to the 'main' branch
 
 pool:
-  agent: 'default'  # Use an Ubuntu agent for the build (can be adjusted based on your requirements)
+  vmImage: 'ubuntu-latest'  # Use an Ubuntu agent for the build (can be adjusted based on your requirements)
+
+variables:
+  mavenPOMFile: 'pom.xml'
 
 steps:
-  - script: |
-      echo "Starting Azure Pipeline..."
-    displayName: 'Initialize Pipeline'
-
-  - checkout: self  # Check out the source code repository
-
-  - task: JavaToolInstaller@0
+  - task: Maven@3
+    displayName: 'Maven package'
     inputs:
-      versionSpec: '11'  # Install Java version 11
-      jdkArchitectureOption: 'x64'  # Specify architecture (x64 or x86)
+      mavenPomFile: '$(mavenPOMFile)'  # Use the defined variable for the POM file path
+      goals: 'package'  # Execute Maven package goal to build the project
 
-  - script: |
-      java -version  # Verify Java version
-      mvn -version  # Verify Maven installation
-      mvn clean package  # Replace with your Maven build command
-    displayName: 'Maven Build'
+  - task: CopyFiles@2
+    displayName: 'Copy Files to Artifact Staging Directory'
+    inputs:
+      SourceFolder: '$(system.defaultworkingdirectory)'  # Source folder where Maven built the artifacts
+      Contents: '**/*.jar'  # Include all JAR files in the source folder
+      TargetFolder: '$(build.artifactstagingdirectory)'  # Copy JAR files to the artifact staging directory
+    condition: succeededOrFailed()  # Execute this step regardless of previous steps' result
 
   - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
     inputs:
-      pathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.jar'  # Path to publish JAR artifact
-      artifactName: 'java-app'  # Name of the artifact to publish
-    displayName: 'Publish Artifact'
-
-# Add additional steps for testing, deploying, or other tasks as needed
+      PathtoPublish: '$(build.artifactstagingdirectory)'  # Publish artifacts from the staging directory
+    condition: succeededOrFailed()  # Publish artifacts regardless of previous steps' result
