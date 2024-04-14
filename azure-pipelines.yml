@@ -13,10 +13,7 @@ steps:
 
   - checkout: self  # Check out the source code repository
 
-  - script: |
-      git fetch --all
-      git checkout main  # Optionally, specify the branch to check out
-    displayName: 'Git Checkout'
+ 
 
   - task: MavenAuthenticate@0  # Authenticate Maven (if needed)
 
