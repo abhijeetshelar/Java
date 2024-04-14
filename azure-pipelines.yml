@@ -6,7 +6,9 @@ trigger:
       - main  # Trigger the pipeline when changes are pushed to the 'main' branch
 
 pool:
-  vmImage: 'Default'  # Use an Ubuntu agent for the build (can be adjusted based on your requirements)
+  name: 'Default'  # Specify the name of your self-hosted agent pool
+  demands:
+    - agent.name -equals Default  # Specify the name of your self-hosted agent
 
 variables:
   mavenPOMFile: 'pom.xml'
@@ -21,8 +23,8 @@ steps:
   - task: CopyFiles@2
     displayName: 'Copy Files to Artifact Staging Directory'
     inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)'  # Source folder where Maven built the artifacts
-      Contents: '**/*.jar'  # Include all JAR files in the source folder
+      SourceFolder: '$(system.defaultworkingdirectory)/target'  # Source folder where Maven built the artifacts
+      Contents: '**/*.jar'  # Include all JAR files in the target folder
       TargetFolder: '$(build.artifactstagingdirectory)'  # Copy JAR files to the artifact staging directory
     condition: succeededOrFailed()  # Execute this step regardless of previous steps' result
 
