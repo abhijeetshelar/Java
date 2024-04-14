@@ -14,8 +14,18 @@
     <dependencies>
         <!-- No dependencies needed for this simple app -->
     </dependencies>
+<<<<<<< HEAD
 
     <!-- Define build configuration -->
+=======
+    
+    <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+</properties>
+
+    
+>>>>>>> c06ea0860b61465d016ccf6257492b1f7ce036b7
     <build>
         <plugins>
             <!-- Configure Maven Compiler Plugin -->
