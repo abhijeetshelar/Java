@@ -19,9 +19,15 @@ steps:
 
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.xml'  # Path to your pom.xml file
-      mavenOptions: '-Xmx3072m'  # Optional: Maven JVM options
-      goals: 'clean package'  # Maven goals (build and package)
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      mavenVersionOption: 'Default'
+      mavenOptions: '-Xmx3072m'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
     displayName: 'Build'
 
 
