@@ -1,27 +1,37 @@
-trigger:
+# azure-pipelines.yml
 
+trigger:
   - main  # Trigger the pipeline when changes are pushed to the 'main' branch
 
 pool:
-  name: Default  # Specify the name of your self-hosted agent pool
-
-variables:
-  JAVA_HOME: "C:\\Program Files\\Java\\jdk-11.0.17"
-  PATH: "C:\\Program Files\\Java\\jdk-11.0.17\\bin;C:\\path\\to\\apache-maven\\bin;%PATH%"
+  name: 'default'  # Replace 'YourSelfHostedAgentPool' with the name of your agent pool
 
 steps:
   - script: |
-      java -version
-      mvn --version
-    displayName: 'Show Java and Maven Versions'
+      echo "Starting Azure Pipelines CI..."
+    displayName: 'Initialize'
+
+  - checkout: self  # Check out the source code repository
 
   - script: |
-     dir
-      mvn.cmd clean package  # Use mvn.cmd for Maven on Windows
+      git fetch --all
+      git checkout main  # Optionally, specify the branch to check out
+    displayName: 'Git Checkout'
+
+  - task: MavenAuthenticate@0  # Authenticate Maven (if needed)
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'  # Path to your pom.xml file
+      mavenOptions: '-Xmx3072m'  # Optional: Maven JVM options
+      goals: 'clean package'  # Maven goals (build and package)
     displayName: 'Build'
-    workingDirectory: $(Pipeline.Workspace)/java  # Use absolute path
 
-  - script: |
-      mvn.cmd test  # Run tests using mvn.cmd (replace with appropriate test command)
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'  # Path to your pom.xml file
+      mavenOptions: '-Xmx3072m'  # Optional: Maven JVM options
+      goals: 'test'  # Maven goals (run tests)
     displayName: 'Run Tests'
-    workingDirectory: $(Pipeline.Workspace)/java  # Use absolute path'
+
+# Add additional steps for deploying or publishing artifacts as needed
