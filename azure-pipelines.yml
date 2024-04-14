@@ -24,11 +24,5 @@ steps:
       goals: 'clean package'  # Maven goals (build and package)
     displayName: 'Build'
 
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'  # Path to your pom.xml file
-      mavenOptions: '-Xmx3072m'  # Optional: Maven JVM options
-      goals: 'test'  # Maven goals (run tests)
-    displayName: 'Run Tests'
 
 # Add additional steps for deploying or publishing artifacts as needed
